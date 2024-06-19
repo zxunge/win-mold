@@ -1,0 +1,22 @@
+name: build win-mold
+
+on: workflow_dispatch
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: msys2/setup-msys2@v2
+        with:
+          msystem: clang32
+          update: true
+          install: >-
+            git
+            mingw-w64-i686-clang
+            p7zip
+
+      - name: build mold
+        shell: msys2 {0}
+        id: build
+        run: ./build.sh
