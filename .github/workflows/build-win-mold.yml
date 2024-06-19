@@ -20,6 +20,7 @@ jobs:
             diffutils
             mingw-w64-i686-make
             make
+            mingw-w64-clang-i686-mimalloc
 
       - name: build mold
         shell: msys2 {0}
