@@ -15,8 +15,31 @@ jobs:
             git
             mingw-w64-i686-clang
             p7zip
+            cmake
 
       - name: build mold
         shell: msys2 {0}
         id: build
         run: ./build.sh
+
+      - name: release
+        id: release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.build.outputs.RELEASE_NAME }}
+          release_name: ${{ steps.build.outputs.RELEASE_NAME }}
+          body: |
+            win-mold r${{ steps.build.outputs.BUILDNO }}
+          
+      - name: upload
+        id: upload
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.release.outputs.upload_url }}
+          asset_path: ${{ steps.build.outputs.OUTPUT_BINARY }}
+          asset_name: ${{ steps.build.outputs.OUTPUT_NAME }}
+          asset_content_type: application/x-7z-compressed
