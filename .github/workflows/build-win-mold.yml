@@ -16,6 +16,10 @@ jobs:
             mingw-w64-i686-clang
             p7zip
             cmake
+            mingw-w64-clang-i686-gcc-compat
+            diffutils
+            mingw-w64-i686-make
+            make
 
       - name: build mold
         shell: msys2 {0}
